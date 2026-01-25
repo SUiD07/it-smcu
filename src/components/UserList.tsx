@@ -1,44 +1,33 @@
-import React from "react";
-import { User } from "@/app/page";
+import Link from "next/link";
 import {
   Card,
-  //   CardAction,
   CardContent,
   CardDescription,
-  //   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
+import { User } from "@/app/data/users";
 
-// const users = ["Alice", "Bob", "Charlie"];
-export default function UserList({
-  users,
-  onSelect,
-}: {
-  users: User[];
-  onSelect: (user: User) => void;
-}) {
+export default function UserList({ users }: { users: User[] }) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>สมาชิก</CardTitle>
         <CardDescription>สมาชิกทั้งหมดในฝ่าย</CardDescription>
-        {/* <CardAction>Card Action</CardAction> */}
       </CardHeader>
-      <CardContent>
+
+      <CardContent className="space-y-2">
         {users.map((user) => (
-          <div key={user.id} className="flex justify-between items-center mb-2">
+          <div key={user.id} className="flex justify-between items-center">
             <span>{user.name}</span>
-            <Button size="xs" onClick={() => onSelect(user)}>
-              See details
-            </Button>
+
+            <Link href={`/users/${user.id}`}>
+              <Button size="xs">See details</Button>
+            </Link>
           </div>
         ))}
       </CardContent>
-      {/* <CardFooter>
-        <p>Card Footer</p>
-      </CardFooter> */}
     </Card>
   );
 }
