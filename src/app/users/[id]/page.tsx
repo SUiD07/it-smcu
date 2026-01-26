@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -45,6 +47,9 @@ export default async function UserDetailPage({ params }: Props) {
           </>
         )}
       </CardContent>
+      <Link href="/users">
+        <Button size="xs">Go to User List</Button>
+      </Link>
     </Card>
     // <div className="space-y-2">
     //   <h1 className="text-xl font-bold">{user.name}</h1>
