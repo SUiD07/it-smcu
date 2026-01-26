@@ -2,11 +2,15 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 type Params = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export async function GET(_req: Request, { params }: Params) {
-  const userId = Number(params.id);
+export async function GET(
+  _req: Request,
+  { params }: Params
+) {
+  const { id } = await params;
+  const userId = Number(id);
 
   if (Number.isNaN(userId)) {
     return NextResponse.json(
