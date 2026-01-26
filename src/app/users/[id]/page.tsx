@@ -1,20 +1,31 @@
-import { users } from "@/app/data/users";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
 
-export default async function UserDetail({
-  params,
-}: {
+type Props = {
   params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+};
+
+export default async function UserDetailPage({ params }: Props) {
+  const { id } = await params; // ✅ สำคัญมาก
   const userId = Number(id);
 
-  const user = users.find((u) => u.id === userId);
+  if (Number.isNaN(userId)) {
+    notFound();
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    notFound();
+  }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>User Detail</CardTitle>
+        <CardTitle>Member Detail</CardTitle>
       </CardHeader>
 
       <CardContent className="space-y-1">
@@ -35,5 +46,10 @@ export default async function UserDetail({
         )}
       </CardContent>
     </Card>
+    // <div className="space-y-2">
+    //   <h1 className="text-xl font-bold">{user.name}</h1>
+    //   <p>Role: {user.role}</p>
+    //   <p>Status: {user.status}</p>
+    // </div>
   );
 }
