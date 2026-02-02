@@ -1,7 +1,6 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
-// GET /api/users
 export async function GET() {
   const users = await prisma.user.findMany({
     orderBy: { createdAt: "desc" },
@@ -10,13 +9,17 @@ export async function GET() {
   return NextResponse.json(users);
 }
 
-// POST /api/users
 export async function POST(req: Request) {
-  const { name, role, status } = await req.json();
+  const body = await req.json();
+  const { name, role, status } = body;
 
   const user = await prisma.user.create({
-    data: { name, role, status },
+    data: {
+      name,
+      role,
+      status,
+    },
   });
 
-  return NextResponse.json(user, { status: 201 });
+  return NextResponse.json(user);
 }
